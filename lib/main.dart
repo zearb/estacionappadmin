@@ -1,8 +1,12 @@
 import 'package:estacionapp/Bloc/provider.dart';
+import 'package:estacionapp/pages/EspacioPage.dart';
 import 'package:estacionapp/pages/HomePage.dart';
 import 'package:estacionapp/pages/LoginPage.dart';
+import 'package:estacionapp/pages/PisoPage.dart';
+import 'package:estacionapp/pages/ZonaPage.dart';
 import 'package:estacionapp/preferencias_usuario/preferencias_usuario.dart';
 import 'package:flutter/material.dart';
+
 
 
 void main() async{
@@ -27,6 +31,9 @@ class MyApp extends StatelessWidget {
         routes: {
           'login' : (BuildContext context) => LoginPage(),
           'home' : (BuildContext context) => HomePage(),
+          'zona' : (BuildContext context) => ZonaPage(),
+          'piso' : (BuildContext context) => PisoPage(),
+          'espacio' : (BuildContext context) => EspacioPage(),
         },
         theme: ThemeData(
           primarySwatch: Colors.blue,
