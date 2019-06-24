@@ -1,20 +1,23 @@
+import 'package:estacionapp/models/Zona_model.dart';
 import 'package:estacionapp/models/empresa_model.dart';
-import 'package:estacionapp/models/sede_model.dart';
 import 'package:estacionapp/providers/EmpresaProvider.dart';
-import 'package:estacionapp/providers/SedeProvider.dart';
+import 'package:estacionapp/providers/ZonaProvider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class HomePage extends StatelessWidget{
+class ZonaPage extends StatelessWidget{
 
   
   final empresaProvider = new EmpresaProvider();
-  final sedeProvider = new SedeProvider();
+  final zonaProvider = new ZonaProvider();
+
 
   @override
   Widget build(BuildContext context) {
 
+
+    // print(idZona);
 
     Color color1 = Color.fromRGBO(249, 170, 51, 1);
     Color color2 = Color.fromRGBO(73, 101, 113, 1);
@@ -31,7 +34,7 @@ class HomePage extends StatelessWidget{
       body: Container(
         color: color2,
         padding: EdgeInsets.all(10.0),
-        child: _listaSedes()
+        child: _listaZonas(context)
       )
         );
     }
@@ -46,7 +49,7 @@ class HomePage extends StatelessWidget{
 
           final empresa = snapshot.data;
           
-          return Text('${empresa[0].nomEmpresa} - Seleccione la sede:');
+          return Text('${empresa[0].nomEmpresa} - Seleccione la zona:');
         }else{
           return Center(child: CircularProgressIndicator(),);
         }
@@ -56,21 +59,27 @@ class HomePage extends StatelessWidget{
     // return 
   }
 
-  Widget _listaSedes() {
+  Widget _listaZonas(BuildContext context) {
+
+    
+    final String idSede = ModalRoute.of(context).settings.arguments;
     
     return FutureBuilder(
-      future: sedeProvider.cargarSede(),
-      builder: (BuildContext context,AsyncSnapshot<List<SedeModel>> snapshot){
-          
+      future: zonaProvider.cargarZona(idSede),
+      builder: (BuildContext context,AsyncSnapshot<List<ZonaModel>> snapshot){
+
+  
         if(snapshot.hasData){
 
-          final sede = snapshot.data;
+
+
+          final zona = snapshot.data;
           
           // if(sede.where((f)=>f.idEmpresa()));
 
           return ListView.builder(
-            itemCount: sede.length,
-            itemBuilder: (context,i) => _crearItemSede(context,sede[i]),
+            itemCount: zona.length,
+            itemBuilder: (context,i) => _crearItemZona(context,zona[i]),
           );
         }else{
           return Center(
@@ -84,7 +93,7 @@ class HomePage extends StatelessWidget{
   }
 
 
-  Widget _crearItemSede(BuildContext context,SedeModel sede){
+  Widget _crearItemZona(BuildContext context,ZonaModel zona){
     
     return Card(
       color: Color.fromRGBO(73, 73, 81, 1),
@@ -95,15 +104,15 @@ class HomePage extends StatelessWidget{
           ListTile(
             contentPadding: EdgeInsets.all(20.0),
             leading: Icon(Icons.location_on,color: Colors.blueAccent,),
-            title: Text('${sede.distrito}',style: TextStyle(color: Colors.white, fontSize:25.0),),
-                  subtitle: Text('${sede.direccion}',style: TextStyle(color: Colors.white,fontSize: 15.0),textAlign: TextAlign.end,),
+            title: Text('${zona.nombreZona}',style: TextStyle(color: Colors.white, fontSize:25.0),),
+                  subtitle: Text('Estado: ${zona.estadoZona}',style: TextStyle(color: Colors.white,fontSize: 15.0),textAlign: TextAlign.end,),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               FlatButton(
                 child: Text('Gestionar'),
-                onPressed: ()=>Navigator.pushNamed(context, 'zona',arguments: sede.id),
+                onPressed: ()=>Navigator.pushNamed(context, 'piso',arguments: zona.id),
               )
             ],
           )

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:estacionapp/preferencias_usuario/preferencias_usuario.dart';
 import 'package:http/http.dart' as http;
+import 'package:estacionapp/preferencias_usuario/preferencias_usuario.dart';
 
 class UsuarioProvider {
 
@@ -23,11 +23,13 @@ class UsuarioProvider {
 
         Map<String,dynamic> decodedResp = json.decode(resp.body);
 
-        print(decodedResp);
+        // print(decodedResp);
 
         if(decodedResp.containsKey('idToken')){
 
           _prefs.token = decodedResp['idToken'];
+
+          _prefs.em = decodedResp['email'];
 
           return{'ok':true, 'token': decodedResp['idToken']};
         }else{
@@ -35,6 +37,7 @@ class UsuarioProvider {
         }
 
     }
+
 
 
 }
